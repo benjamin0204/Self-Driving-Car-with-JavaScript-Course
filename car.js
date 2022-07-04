@@ -5,21 +5,41 @@ class Car {
     this.width = width;
     this.height = height;
 
+    this.speed = 0;
+    this.acceleration = 0.2;
+    this.maxSpeed = 3;
+    this.friction = 0.075;
     this.controls = new Controls();
   }
   update() {
+    // Handle Forwards and reverse
     if (this.controls.forward) {
-      this.y -= 2;
+      this.speed += this.acceleration;
     }
     if (this.controls.back) {
-      this.y += 2;
+      this.speed -= this.acceleration;
     }
-    if (this.controls.left) {
-      this.x -= 2;
+
+    // Cap at max speed
+    if (this.speed > this.maxSpeed) {
+      this.speed = this.maxSpeed;
     }
-    if (this.controls.right) {
-      this.x += 2;
+    if (this.speed < -this.maxSpeed / 2) {
+      this.speed = -this.maxSpeed / 2;
     }
+
+    // Add friction "physics"
+    if (this.speed > 0) {
+      this.speed -= this.friction;
+    }
+    if (this.speed < 0) {
+      this.speed += this.friction;
+    }
+    if (Math.abs(this.speed) < this.friction) {
+      this.speed = 0;
+    }
+
+    this.y -= this.speed;
   }
   draw(ctx) {
     ctx.beginPath();
