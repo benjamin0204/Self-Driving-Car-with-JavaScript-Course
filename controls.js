@@ -1,11 +1,18 @@
 class Controls {
-  constructor() {
+  constructor(controllType) {
     this.forward = false;
     this.left = false;
     this.right = false;
     this.back = false;
 
-    this.#addKeyBoardListener();
+    switch (controllType) {
+      case "PLAYER":
+        this.#addKeyBoardListener();
+        break;
+      case "AI":
+        this.forward = true;
+        break;
+    }
   }
   #addKeyBoardListener() {
     document.onkeydown = (e) => {
