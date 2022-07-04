@@ -1,20 +1,23 @@
 class Sensor {
   constructor(car) {
     this.car = car;
-    this.rayCount = 3;
-    this.rayLength = 50;
-    this.raySpread = Math.PI / 4; // 45deg
+    this.rayCount = 10;
+    this.rayLength = 150;
+    this.raySpread = Math.PI / 2; // 90deg
 
     this.rays = [];
   }
   update() {
     this.rays = [];
     for (let i = 0; i < this.rayCount; i++) {
-      const rayAngle = lerp(
-        this.raySpread / 2,
-        -this.raySpread / 2,
-        i / (this.rayCount - 1)
-      );
+      // Adding the car angle makes the sensors point the same way as the car
+      const rayAngle =
+        lerp(
+          this.raySpread / 2,
+          -this.raySpread / 2,
+          this.rayCount == 1 ? 0.5 : i / (this.rayCount - 1)
+        ) + this.car.angle;
+
       const startPoint = { x: this.car.x, y: this.car.y };
       const endPoint = {
         x: this.car.x - Math.sin(rayAngle) * this.rayLength,
