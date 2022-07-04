@@ -15,9 +15,9 @@ class Car {
 
     this.controls = new Controls();
   }
-  update() {
+  update(roadBorders) {
     this.#move();
-    this.sensor.update();
+    this.sensor.update(roadBorders);
   }
 
   #move() {
@@ -38,6 +38,7 @@ class Car {
       this.speed -= this.acceleration;
     }
   }
+
   #capMaxSpeed() {
     // Cap at max speed
     if (this.speed > this.maxSpeed) {
@@ -47,6 +48,7 @@ class Car {
       this.speed = -this.maxSpeed / 2;
     }
   }
+
   #addFrictionPhys() {
     // Add friction "physics"
     if (this.speed > 0) {
@@ -59,6 +61,7 @@ class Car {
       this.speed = 0;
     }
   }
+
   #steering() {
     // Handle Steering
     if (this.speed != 0) {
@@ -71,10 +74,12 @@ class Car {
       }
     }
   }
+
   #startCar() {
     this.x -= Math.sin(this.angle) * this.speed;
     this.y -= Math.cos(this.angle) * this.speed;
   }
+
   draw(ctx) {
     ctx.save();
     ctx.translate(this.x, this.y);
