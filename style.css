@@ -1,0 +1,10 @@
+body {
+    margin: 0;
+    background: pink;
+    overflow: hidden;
+    text-align: center;
+}
+
+#myCanvas {
+    background: lightblue;
+}
