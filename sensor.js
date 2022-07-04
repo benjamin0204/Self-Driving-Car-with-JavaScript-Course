@@ -8,16 +8,32 @@ class Sensor {
     this.rays = [];
     this.readings = [];
   }
-  update(roadBorders) {
+  update(roadBorders, traffic) {
     this.#castRays();
     this.readings = [];
     for (let i = 0; i < this.rays.length; i++) {
-      this.readings.push(this.#getReading(this.rays[i], roadBorders));
+      this.readings.push(this.#getReading(this.rays[i], roadBorders, traffic));
     }
   }
 
-  #getReading(ray, roadBorders) {
+  #getReading(ray, roadBorders, traffic) {
     let intersects = [];
+
+    // Checking the car against the traffix
+    for (let i = 0; i < traffic.length; i++) {
+      const polygon = traffic[i].polygon;
+      for (let j = 0; j < polygon.length; j++) {
+        const intersect = getIntersection(
+          ray[0],
+          ray[1],
+          polygon[j],
+          polygon[(j + 1) % polygon.length]
+        );
+        if (intersect) intersects.push(intersect);
+      }
+    }
+
+    // Checking the car against the road borders
     for (let i = 0; i < roadBorders.length; i++) {
       const intersect = getIntersection(
         ray[0],
@@ -79,7 +95,7 @@ class Sensor {
 
       ctx.beginPath();
       ctx.lineWidth = 2;
-      ctx.strokeStyle = "black";
+      ctx.strokeStyle = "blue";
       ctx.moveTo(this.rays[i][1].x, this.rays[i][1].y);
       ctx.lineTo(end.x, end.y);
       ctx.stroke();
