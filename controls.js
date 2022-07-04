@@ -23,7 +23,6 @@ class Controls {
           this.back = true;
           break;
       }
-      console.table(this);
     };
     document.onkeyup = (e) => {
       switch (e.key) {
@@ -40,7 +39,6 @@ class Controls {
           this.back = false;
           break;
       }
-      console.table(this);
     };
   }
 }

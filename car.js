@@ -14,6 +14,19 @@ class Car {
     this.controls = new Controls();
   }
   update() {
+    this.#move();
+  }
+
+  #move() {
+    this.#forwardAndReverse();
+    this.#capMaxSpeed();
+    this.#addFrictionPhys();
+    this.#steering();
+
+    this.#startCar();
+  }
+
+  #forwardAndReverse() {
     // Handle Forwards and reverse
     if (this.controls.forward) {
       this.speed += this.acceleration;
@@ -21,7 +34,8 @@ class Car {
     if (this.controls.back) {
       this.speed -= this.acceleration;
     }
-
+  }
+  #capMaxSpeed() {
     // Cap at max speed
     if (this.speed > this.maxSpeed) {
       this.speed = this.maxSpeed;
@@ -29,7 +43,8 @@ class Car {
     if (this.speed < -this.maxSpeed / 2) {
       this.speed = -this.maxSpeed / 2;
     }
-
+  }
+  #addFrictionPhys() {
     // Add friction "physics"
     if (this.speed > 0) {
       this.speed -= this.friction;
@@ -40,7 +55,8 @@ class Car {
     if (Math.abs(this.speed) < this.friction) {
       this.speed = 0;
     }
-
+  }
+  #steering() {
     // Handle Steering
     if (this.speed != 0) {
       const flip = this.speed > 0 ? 1 : -1;
@@ -51,7 +67,8 @@ class Car {
         this.angle += 0.03 * flip;
       }
     }
-
+  }
+  #startCar() {
     this.x -= Math.sin(this.angle) * this.speed;
     this.y -= Math.cos(this.angle) * this.speed;
   }
